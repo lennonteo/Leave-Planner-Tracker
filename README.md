@@ -4,8 +4,8 @@ A single-page prototype for a small team to submit leave requests, review them a
 
 ## Screens
 
-- **Request leave:** applicant name, application date, start and end dates, with working-day duration calculated automatically (weekends and listed public holidays excluded).
-- **Review:** monthly calendar showing approved, pending and selected leave, with an over-limit flag for days when too many people are away. The team lead can approve, reject, or reopen a past decision.
+- **Request leave:** applicant name, application date, start and end dates, with working-day duration calculated automatically (weekends and listed public holidays excluded). A cover check warns the requester if the dates would put the team over its limit.
+- **Review:** a team calendar with a Month view (continuous leave bars) and a Timeline view (one row per person, with a daily count of people away). Days over the team's limit are flagged. Each request opens in a decision sheet where the team lead can approve, reject, add a message, or return a past decision to pending.
 - **Status:** requesters pick their name to see each request as Pending, Approved or Not approved.
 
 ## Prototype limits

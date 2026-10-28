@@ -15,11 +15,12 @@ img{max-width:100%}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout: a quiet top bar with three screens. Cool grey-green ground, white cards, and one warm orange that only ever means "needs the lead's attention". */
+/* Layout: quiet top bar, three screens. Cool grey-green ground, white hairline cards, one warm orange that only marks what needs the lead's attention. Leave is drawn as continuous bars (month) or one row per person (timeline). */
 :root{
   --bg:#F2F5F4; --surface:#FFFFFF; --surface-2:#F6F8F7; --ink:#1E2928; --muted:#5C6B69; --line:#DFE6E4;
   --accent:#C2540A; --accent-soft:#FCEBDD; --accent-line:#EBB387; --on-accent:#FFFFFF;
-  --ok:#2B6B55; --ok-soft:#E0F0E9; --no:#98414B; --no-soft:#F6E3E5;
+  --ok:#2B6B55; --ok-soft:#E0F0E9; --ok-fill:#2B6B55; --on-ok:#FFFFFF;
+  --no:#98414B; --no-soft:#F6E3E5;
   --shadow:0 1px 2px rgba(30,41,40,.05),0 8px 24px rgba(30,41,40,.04);
   --font-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
   --font-body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -28,20 +29,22 @@ img{max-width:100%}
   :root:not([data-theme="light"]){
     --bg:#131A1A; --surface:#1B2424; --surface-2:#172020; --ink:#E7EEEC; --muted:#94A4A1; --line:#2C3838;
     --accent:#F0894A; --accent-soft:#3A2515; --accent-line:#7A4A27; --on-accent:#1A1008;
-    --ok:#7CCBB0; --ok-soft:#1B3A30; --no:#E39AA2; --no-soft:#3D2428;
+    --ok:#7CCBB0; --ok-soft:#1B3A30; --ok-fill:#5BB89B; --on-ok:#0B1A15;
+    --no:#E39AA2; --no-soft:#3D2428;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.2); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#131A1A; --surface:#1B2424; --surface-2:#172020; --ink:#E7EEEC; --muted:#94A4A1; --line:#2C3838;
   --accent:#F0894A; --accent-soft:#3A2515; --accent-line:#7A4A27; --on-accent:#1A1008;
-  --ok:#7CCBB0; --ok-soft:#1B3A30; --no:#E39AA2; --no-soft:#3D2428;
+  --ok:#7CCBB0; --ok-soft:#1B3A30; --ok-fill:#5BB89B; --on-ok:#0B1A15;
+  --no:#E39AA2; --no-soft:#3D2428;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.2); color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;
   padding-block:24px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.shell{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.shell{max-width:1160px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em;margin:0;text-wrap:balance}
 h1{font-size:28px;line-height:1.15} h2{font-size:19px} h3{font-size:16px}
 p{margin:0}
@@ -59,26 +62,24 @@ button{font:inherit;color:inherit}
 .tabs a[aria-current="page"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
 .badge{min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--accent);color:var(--on-accent);font-size:12px;font-weight:600;display:inline-grid;place-items:center}
 .badge[hidden]{display:none}
-
-/* banner */
 .banner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 14px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:14px}
 .linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 
-/* cards + type */
+/* cards, type, fields */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);min-width:0}
-.sub{color:var(--muted);margin-top:6px;max-width:56ch}
+.sub{color:var(--muted);margin-top:6px;max-width:60ch}
 .head{display:flex;flex-direction:column;gap:4px;margin-bottom:4px}
-.muted{color:var(--muted)}
+.muted,.meta{color:var(--muted)} .meta{font-size:14px}
 .eyebrow{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
-
-/* buttons + fields */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 18px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600;cursor:pointer;text-decoration:none;color:var(--ink)}
 .btn:hover{border-color:var(--muted)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .btn.primary:hover{filter:brightness(1.06)}
-.btn.ok{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.btn.ok{background:var(--ok-fill);border-color:var(--ok-fill);color:var(--on-ok)}
+.btn.rej{color:var(--no);border-color:var(--no)}
 .btn.ghost{background:transparent}
 .btn.sm{height:36px;padding:0 14px;font-size:14px}
+.btn[disabled]{opacity:.5;cursor:default;pointer-events:none}
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 label,.lbl{font-size:13px;font-weight:600;color:var(--muted)}
 .opt{font-weight:400}
@@ -89,7 +90,7 @@ form{display:flex;flex-direction:column;gap:16px;margin-top:20px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .err{color:var(--no);background:var(--no-soft);padding:10px 12px;border-radius:10px;font-size:14px}
 
-/* submit screen */
+/* request screen */
 .submit-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
 .dur{display:flex;gap:16px;align-items:center;padding:16px;border-radius:12px;background:var(--accent-soft)}
 .dur.idle{background:var(--surface-2);border:1px dashed var(--line)}
@@ -97,58 +98,97 @@ form{display:flex;flex-direction:column;gap:16px;margin-top:20px}
 .dur-num{font-family:var(--font-display);font-weight:700;font-size:44px;line-height:1;color:var(--accent);min-width:48px;text-align:center}
 .dur.idle .dur-num{color:var(--muted)} .dur.bad .dur-num{color:var(--no)}
 .dur-t{font-weight:600} .dur-s{font-size:13px;color:var(--muted)}
-.ovl{font-size:14px;color:var(--muted);margin-top:-6px}
-.ovl strong{color:var(--ink)}
-.side-list{display:flex;flex-direction:column;gap:0;margin-top:14px}
+.formfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
+.total{font-size:14px;color:var(--muted)} .total b{color:var(--ink);font-size:16px}
+.side-list{display:flex;flex-direction:column;margin-top:14px}
 .side-item{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
 .side-item:first-child{border-top:0}
-.side-item b{font-weight:600}
 .dayspill{white-space:nowrap;font-size:13px;color:var(--muted)}
 .done{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .done .tick{width:44px;height:44px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center}
 .done .summary{border:1px solid var(--line);border-radius:12px;padding:14px 16px;width:100%;background:var(--surface-2)}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap}
 
-/* review screen */
-.review-grid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);gap:20px;align-items:start}
-.calbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.calnav{display:flex;align-items:center;gap:6px}
-.iconbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center}
-.iconbtn:hover{border-color:var(--muted)}
-.monthlbl{font-family:var(--font-display);font-weight:600;font-size:22px;min-width:9ch}
-.limit{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.limit select{width:auto;min-height:36px;padding:4px 8px;font-size:14px}
-.preview{margin:16px 0 14px;padding:12px 14px;border-radius:12px;font-size:14px;display:flex;gap:10px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--line)}
+/* cover check strip (form, review preview, sheet) */
+.preview{padding:12px 14px;border-radius:12px;font-size:14px;display:flex;gap:10px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--line)}
 .preview.warn{background:var(--accent-soft);border-color:var(--accent-line)}
 .preview.fine{background:var(--ok-soft);border-color:transparent}
 .preview .dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none;background:var(--muted)}
-.preview.warn .dot{background:var(--accent)} .preview.fine .dot{background:var(--ok)}
+.preview.warn .dot{background:var(--accent)} .preview.fine .dot{background:var(--ok-fill)}
+
+/* review screen */
+.review-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(290px,1fr);gap:20px;align-items:start}
+.calbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.calnav{display:flex;align-items:center;gap:6px}
+.calopts{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.iconbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center}
+.iconbtn:hover{border-color:var(--muted)}
+.monthlbl{font-family:var(--font-display);font-weight:600;font-size:22px;min-width:9ch}
+.seg{display:flex;padding:3px;gap:2px;background:var(--line);border-radius:10px}
+.seg button{border:0;background:none;height:30px;padding:0 12px;border-radius:7px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.limit{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:400}
+.limit select{width:auto;min-height:34px;padding:2px 8px;font-size:14px}
+.review-grid .preview{margin:16px 0 14px}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:0 0 12px}
 .legend span{display:inline-flex;align-items:center;gap:6px}
-.sw{width:14px;height:14px;border-radius:4px;display:inline-block}
-.sw.ok{background:var(--ok-soft);border:1px solid var(--ok)}
-.sw.pend{border:1px dashed var(--accent);background:transparent}
+.sw{width:18px;height:10px;border-radius:3px;display:inline-block}
+.sw.ok{background:var(--ok-fill)}
+.sw.pend{border:1.5px dashed var(--accent)}
 .sw.sel{background:var(--accent)}
-.sw.over{background:var(--accent-soft);border:1px solid var(--accent-line)}
-.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.dow{padding:8px 8px;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);font-weight:600}
-.day{min-height:100px;padding:6px;background:var(--surface);display:flex;flex-direction:column;gap:3px;min-width:0}
-.day.wk{background:var(--surface-2)}
-.day.out .num{opacity:.4}
-.day.over{background:var(--accent-soft)}
-.top-row{display:flex;justify-content:space-between;align-items:center;gap:4px;min-height:22px}
-.num{font-size:13px;font-weight:600;width:24px;height:24px;display:grid;place-items:center;border-radius:99px}
-.day.today .num{background:var(--ink);color:var(--bg)}
-.tag{font-size:11px;font-weight:600;color:var(--accent);white-space:nowrap}
-.hol{font-size:11px;color:var(--muted);line-height:1.2}
-.chip{font-size:12px;line-height:1.25;padding:3px 6px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chip.ok{background:var(--ok-soft);color:var(--ok);font-weight:500}
-.chip.pend{border:1px dashed var(--accent-line);color:var(--accent)}
-.chip.sel{background:var(--accent);color:var(--on-accent);font-weight:600}
-.chip.more{color:var(--muted);padding-left:2px}
-.chip .ini{display:none}
-.calnote{margin-top:12px;font-size:14px;color:var(--muted)}
+.sw.over{background:var(--accent-soft);border:1px solid var(--accent-line);height:12px;width:14px}
+.calnote,.hint{font-size:13px;color:var(--muted);margin-top:12px}
 
+/* month view: continuous bars */
+.mcal{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.dowrow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--surface-2)}
+.dow{padding:8px;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.week{position:relative;border-top:1px solid var(--line);min-height:96px}
+.wbg{position:absolute;inset:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.bgc{border-left:1px solid var(--line)} .bgc:first-child{border-left:0}
+.bgc.wk,.bgc.hol{background:var(--surface-2)}
+.bgc.over{background:var(--accent-soft)}
+.wfg{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:3px;padding-bottom:8px;align-content:start}
+.dh{grid-row:1;padding:6px 8px 2px;display:flex;flex-direction:column;gap:1px;min-width:0;pointer-events:none}
+.dh .top-row{display:flex;justify-content:space-between;align-items:center;gap:4px;min-height:24px}
+.num{font-size:13px;font-weight:600;width:24px;height:24px;display:grid;place-items:center;border-radius:99px}
+.dh.out .num{opacity:.4}
+.dh.today .num{background:var(--ink);color:var(--bg)}
+.tag{font-size:11px;font-weight:600;color:var(--accent);white-space:nowrap}
+.hol-l{font-size:11px;color:var(--muted);line-height:1.2}
+.bar{border:0;height:24px;display:flex;align-items:center;padding:0 8px;font-size:12px;font-weight:600;cursor:pointer;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;z-index:1}
+.bar.l{margin-left:4px;border-top-left-radius:7px;border-bottom-left-radius:7px}
+.bar.r{margin-right:4px;border-top-right-radius:7px;border-bottom-right-radius:7px}
+.bar.ok{background:var(--ok-fill);color:var(--on-ok)}
+.bar.sel{background:var(--accent);color:var(--on-accent)}
+.bar.pend{background:transparent;color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent);background-image:repeating-linear-gradient(135deg,transparent 0 6px,var(--accent-soft) 6px 12px)}
+.bar:hover{filter:brightness(.94)}
+.bar .ini,.tbar .ini{display:none}
+.bar span,.tbar span{overflow:hidden;text-overflow:ellipsis}
+
+/* timeline view */
+.tl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.tl{min-width:max-content;--nw:140px}
+.tlrow{display:grid;grid-template-columns:var(--nw) repeat(var(--n),minmax(30px,1fr));border-top:1px solid var(--line);position:relative}
+.tlrow:first-child{border-top:0}
+.tname{grid-column:1;grid-row:1;position:sticky;left:0;z-index:3;background:var(--surface);padding:0 12px;display:flex;align-items:center;font-weight:500;font-size:14px;min-height:44px;border-right:1px solid var(--line);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc{grid-row:1;border-left:1px solid var(--line);min-height:44px;min-width:0}
+.tc.wk,.tc.hol{background:var(--surface-2)}
+.tc.over{background:var(--accent-soft)}
+.tlhead .tc{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--muted);min-height:52px;gap:1px}
+.tlhead .tdn{font-size:13px;font-weight:600;color:var(--ink);width:22px;height:22px;display:grid;place-items:center;border-radius:99px}
+.tlhead .tc.today .tdn{background:var(--ink);color:var(--bg)}
+.tlhead .tname,.tlcount .tname{background:var(--surface-2);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tlcount .tc{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;min-height:36px;color:var(--muted)}
+.tlcount .tc.over{color:var(--accent)}
+.tlcount .tname{min-height:36px}
+.tbar{grid-row:1;align-self:center;margin:0 2px;height:26px;border:0;border-radius:7px;font-size:12px;font-weight:600;padding:0 8px;display:flex;align-items:center;cursor:pointer;min-width:0;white-space:nowrap;overflow:hidden;z-index:2;text-align:left}
+.tbar.ok{background:var(--ok-fill);color:var(--on-ok)}
+.tbar.sel{background:var(--accent);color:var(--on-accent)}
+.tbar.pend{background:transparent;color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent);background-image:repeating-linear-gradient(135deg,transparent 0 6px,var(--accent-soft) 6px 12px)}
+.tbar:hover{filter:brightness(.94)}
+
+/* queue */
 .queue{display:flex;flex-direction:column;gap:14px;min-width:0}
 .qhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .count{font-size:13px;color:var(--muted)}
@@ -160,18 +200,29 @@ form{display:flex;flex-direction:column;gap:16px;margin-top:20px}
 .req-days{font-size:13px;color:var(--muted);white-space:nowrap}
 .req-dates{font-weight:500}
 .req-note{font-size:14px;color:var(--muted)}
+.req-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .imp{font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:6px}
 .imp.warn{color:var(--accent)} .imp.fine{color:var(--ok)}
 .imp i{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.reject-box{display:flex;flex-direction:column;gap:8px;padding-top:4px}
-.reject-box textarea{min-height:64px}
 .empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:32px 16px}
-.empty svg{margin-bottom:4px}
 .empty p{color:var(--muted);max-width:34ch}
 .decided{display:flex;flex-direction:column}
-.decided .row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
-.decided .row:first-of-type{border-top:0}
+.decided button.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border:0;border-top:1px solid var(--line);font-size:14px;width:100%;background:none;text-align:left;cursor:pointer;font-family:inherit;color:inherit}
+.decided button.row:first-of-type{border-top:0}
+.decided button.row:hover{background:var(--surface-2)}
+.decided .more{margin-top:8px;align-self:flex-start}
+
+/* decision sheet */
+.scrim{position:fixed;inset:0;background:rgba(15,22,22,.5);display:flex;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:30;overflow-y:auto}
+.sheet{margin:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:16px;outline:none}
+.sheet-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.kv dt,.kv dd{margin:0;padding:10px 12px;border-top:1px solid var(--line);font-size:14px}
+.kv dt:first-of-type,.kv dt:first-of-type+dd{border-top:0}
+.kv dt{color:var(--muted);background:var(--surface-2);padding-right:20px;white-space:nowrap}
+.kv dd{text-align:right;font-weight:500;overflow-wrap:anywhere}
+.sheet-foot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;align-items:center}
+.sheet-foot .linkbtn{margin-right:auto}
 
 /* status screen */
 .statusbar{display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
@@ -187,7 +238,7 @@ form{display:flex;flex-direction:column;gap:16px;margin-top:20px}
 .pill.rejected{background:var(--no-soft);color:var(--no)}
 .sname{font-family:var(--font-display);font-weight:600;font-size:18px;margin-top:8px}
 .sdates{font-weight:500;margin-top:2px}
-.track{display:grid;grid-template-columns:repeat(3,1fr);gap:0;list-style:none;margin:0;padding:0}
+.track{display:grid;grid-template-columns:repeat(3,1fr);list-style:none;margin:0;padding:0}
 .track li{position:relative;padding-top:20px;font-size:12px;color:var(--muted);text-align:center;line-height:1.3}
 .track li::before{content:"";position:absolute;top:4px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--surface);border:2px solid var(--line);z-index:1}
 .track li::after{content:"";position:absolute;top:9px;left:-50%;width:100%;height:2px;background:var(--line)}
@@ -198,31 +249,16 @@ form{display:flex;flex-direction:column;gap:16px;margin-top:20px}
 .track li.now::before{background:var(--accent);border-color:var(--accent)}
 .track li.now::after{background:var(--ink)}
 .track li.now{color:var(--accent);font-weight:600}
-.track li.approved::before{background:var(--ok);border-color:var(--ok)} .track li.approved{color:var(--ok);font-weight:600}
+.track li.approved::before{background:var(--ok-fill);border-color:var(--ok-fill)} .track li.approved{color:var(--ok);font-weight:600}
 .track li.rejected::before{background:var(--no);border-color:var(--no)} .track li.rejected{color:var(--no);font-weight:600}
+.track li.approved::after,.track li.rejected::after{background:var(--ink)}
 .reason{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--no-soft);color:var(--no);font-size:14px}
+.reason.ok{background:var(--ok-soft);color:var(--ok)}
 
 footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding-top:4px}
-
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-weight:500;box-shadow:var(--shadow);z-index:20;max-width:calc(100vw - 32px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;font-weight:500;box-shadow:var(--shadow);z-index:40;max-width:calc(100vw - 32px)}
 .toast[hidden]{display:none}
 
-/* clickable chips, decision sheet */
-.chip{border:0;font-family:inherit;cursor:pointer;width:100%;text-align:left;display:block}
-.chip:hover{filter:brightness(.95)}
-.chip.ok:hover{box-shadow:inset 0 0 0 1px var(--ok)}
-.hint{font-size:13px;color:var(--muted);margin-top:12px}
-.decided button.row{width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;cursor:pointer;align-items:center;color:inherit;font-family:inherit}
-.decided button.row:hover{background:var(--surface-2)}
-.decided .more{margin-top:8px;align-self:flex-start}
-.scrim{position:fixed;inset:0;background:rgba(15,22,22,.5);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:30;overflow-y:auto}
-.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:14px;outline:none}
-.sheet-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.meta{color:var(--muted);font-size:14px}
-.choices{display:flex;flex-direction:column;gap:8px}
-.choices .btn{justify-content:space-between;width:100%}
-.btn[disabled]{opacity:.55;cursor:default}
-.btn.no{background:var(--no);border-color:var(--no);color:var(--surface)}
 @media (max-width:900px){
   .review-grid,.submit-grid{grid-template-columns:minmax(0,1fr)}
   .srow{grid-template-columns:minmax(0,1fr);gap:16px}
@@ -233,13 +269,20 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-s
   .row2{grid-template-columns:1fr}
   .row2.keep{grid-template-columns:1fr 1fr}
   .tabs{width:100%} .tabs a{flex:1;justify-content:center;padding:8px 8px}
-  .day{min-height:64px;padding:4px 3px;align-items:stretch}
-  .chip .full{display:none} .chip .ini{display:inline}
-  .chip{text-align:center;padding:2px 0}
-  .hol{display:none} .tag{display:none}
+  .week{min-height:76px}
+  .dh{padding:4px 2px 0;align-items:center}
+  .dh .top-row{justify-content:center}
+  .tag,.hol-l{display:none}
   .dow{padding:6px 2px;text-align:center;font-size:11px;letter-spacing:0}
   .num{width:22px;height:22px;font-size:12px}
+  .bar{padding:0 2px;justify-content:center;font-size:11px}
+  .bar .full{display:none} .bar .ini{display:inline}
+  .bar.l{margin-left:2px} .bar.r{margin-right:2px}
   .monthlbl{font-size:19px}
+  .tl{--nw:104px}
+  .tname{padding:0 8px}
+  .sheet{padding:20px}
+  .kv dt{padding-right:12px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -281,16 +324,16 @@ var pad=function(n){return String(n).padStart(2,'0')};
 var iso=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
 var parse=function(s){var p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2])};
 var addDays=function(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x};
+var dayDiff=function(a,b){var A=parse(a),B=parse(b);return Math.round((Date.UTC(B.getFullYear(),B.getMonth(),B.getDate())-Date.UTC(A.getFullYear(),A.getMonth(),A.getDate()))/864e5)};
 var TODAY=iso(new Date());
 
+/* Singapore public holidays that fall on a weekday. Deepavali 2026 and Chinese New Year 2027 fall on weekends, so the Monday after is listed. */
 var HOL={
   '2026-11-09':'Deepavali (observed)',
   '2026-12-25':'Christmas Day',
   '2027-01-01':"New Year's Day",
   '2027-02-08':'Chinese New Year (observed)'
 };
-/* Chinese New Year 2027 and Deepavali 2026 fall on weekends; the Monday after is the day off, so those Mondays are listed above. */
-var HOL_WEEKEND={'2026-11-08':1,'2027-02-06':1,'2027-02-07':1};
 var isWork=function(d){var w=d.getDay();return w>0&&w<6&&!HOL[iso(d)]};
 
 function span(start,end){
@@ -305,6 +348,7 @@ function span(start,end){
   }
   return {work:work,cal:cal,hols:hols};
 }
+function bounds(r){var sp=span(r.start,r.end);return sp&&sp.work.length?{s:sp.work[0],e:sp.work[sp.work.length-1],n:sp.work.length}:null}
 function fDay(s,o){return parse(s).toLocaleDateString('en-GB',o||{weekday:'short',day:'numeric',month:'short'})}
 function fRange(a,b){
   var full={weekday:'short',day:'numeric',month:'short'};
@@ -342,19 +386,23 @@ function load(){
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 var S=load();
 
-var ui={sel:null,month:null,filter:'all',who:null,reject:null,submitted:null};
+var ui={sel:null,month:null,calView:'month',filter:'all',who:null,modal:null,submitted:null,allDecided:false};
 function pending(){return S.requests.filter(function(r){return r.status==='pending'}).sort(function(a,b){return a.applied<b.applied?-1:a.applied>b.applied?1:0})}
-function initMonth(){
-  var p=pending()[0];
-  ui.month=(p?p.start:TODAY).slice(0,7);
-}
+function initMonth(){var p=pending()[0];ui.month=(p?p.start:TODAY).slice(0,7)}
 initMonth();
 
-/* ---------- impact on cover ---------- */
+/* ---------- cover maths ---------- */
 function awayOn(k,except){
   var names={};
-  S.requests.forEach(function(x){
-    if(x.status==='approved'&&x.start<=k&&k<=x.end&&x.name!==except)names[x.name]=1;
+  S.requests.forEach(function(x){if(x.status==='approved'&&x.start<=k&&k<=x.end&&x.name!==except)names[x.name]=1});
+  return Object.keys(names);
+}
+/* people counted as away on a calendar day: approved leave plus the request under review */
+function awayNames(k){
+  if(!isWork(parse(k)))return [];
+  var names={};
+  S.requests.forEach(function(r){
+    if(r.start<=k&&k<=r.end&&(r.status==='approved'||(r.status==='pending'&&r.id===ui.sel)))names[r.name]=1;
   });
   return Object.keys(names);
 }
@@ -370,38 +418,38 @@ function impactOf(r){
   });
   return {empty:!sp.work.length,peak:peak,over:over,who:Object.keys(who),total:total,work:sp.work.length};
 }
-function dayList(arr,fmt){
-  var s=arr.slice(0,3).map(fmt).join(', ');
-  return arr.length>3?s+' and '+(arr.length-3)+' more':s;
-}
+function dayList(arr,fmt){var s=arr.slice(0,3).map(fmt).join(', ');return arr.length>3?s+' and '+(arr.length-3)+' more':s}
+var dayFmt=function(o){return fDay(o.k,{weekday:'short',day:'numeric',month:'short'})+' ('+o.away+')'};
 function impactText(r){
   var im=impactOf(r);
   if(im.empty)return {cls:'',html:'This range has no working days.'};
-  if(im.over.length){
-    var days=dayList(im.over,function(o){return fDay(o.k,{weekday:'short',day:'numeric',month:'short'})+' ('+o.away+')'});
-    return {cls:'warn',html:'<strong>Over your limit.</strong> '+esc(first(r.name))+"'s leave would put up to "+im.peak+' of '+im.total+' away: '+esc(days)+'.'};
-  }
+  if(im.over.length)return {cls:'warn',html:'<strong>Over your limit.</strong> '+esc(first(r.name))+"'s leave would put up to "+im.peak+' of '+im.total+' away: '+esc(dayList(im.over,dayFmt))+'.'};
   if(im.who.length)return {cls:'fine',html:'<strong>Cover looks fine.</strong> Overlaps with '+esc(im.who.map(first).join(', '))+'; at most '+im.peak+' of '+im.total+' away.'};
   return {cls:'fine',html:'<strong>Cover looks fine.</strong> No one else is away on these days.'};
 }
+/* requester-facing wording for the form */
+function formCheck(r){
+  var im=impactOf(r);
+  if(im.empty)return null;
+  var pn=S.requests.filter(function(x){return x.status==='pending'&&x.name!==r.name&&x.start<=r.end&&x.end>=r.start}).length;
+  var tail=pn?' '+plural(pn,'other request')+' for these dates '+(pn===1?'is':'are')+' still pending.':'';
+  if(im.over.length)return {cls:'warn',html:'<strong>Heads up.</strong> Up to '+im.peak+' of '+im.total+' would be away: '+esc(dayList(im.over,dayFmt))+'. Your lead may ask you to adjust.'+tail};
+  if(im.who.length)return {cls:'fine',html:'<strong>No clash.</strong> '+esc(im.who.map(first).join(', '))+' '+(im.who.length===1?'is':'are')+' also away in this period, but cover stays within the limit.'+tail};
+  return {cls:'fine',html:'<strong>No clash.</strong> No one else is approved to be away in this period.'+tail};
+}
 
-/* ---------- views ---------- */
+/* ---------- shell ---------- */
 var view=$('#view');
-
 function renderBanner(){
   $('#banner').innerHTML=S.example
     ? '<div class="banner"><span>You are looking at example data for a team of '+S.team.length+'.</span><button class="linkbtn" data-act="clear" type="button">Start fresh</button></div>'
     : '';
 }
-function renderBadge(){
-  var n=pending().length,b=$('#badge');
-  b.textContent=n;b.hidden=!n;
-}
+function renderBadge(){var n=pending().length,b=$('#badge');b.textContent=n;b.hidden=!n}
 
-/* Screen 1: request leave */
+/* ---------- Screen 1: request leave ---------- */
 function awaySoon(){
-  var list=S.requests.filter(function(r){return r.status==='approved'&&r.end>=TODAY})
-    .sort(function(a,b){return a.start<b.start?-1:1}).slice(0,5);
+  var list=S.requests.filter(function(r){return r.status==='approved'&&r.end>=TODAY}).sort(function(a,b){return a.start<b.start?-1:1}).slice(0,5);
   if(!list.length)return '<p class="muted" style="margin-top:12px">No approved leave coming up. Everyone is in.</p>';
   return '<div class="side-list">'+list.map(function(r){
     var n=(span(r.start,r.end)||{work:[]}).work.length;
@@ -422,44 +470,41 @@ function renderSubmit(){
   }
   var opts=S.team.map(function(n){return '<option value="'+esc(n)+'"></option>'}).join('');
   view.innerHTML='<div class="submit-grid"><section class="card">'
-    +'<div class="head"><h1>Request leave</h1><p class="sub">Choose your dates. Duration counts working days only.</p></div>'
+    +'<div class="head"><h1>Request leave</h1><p class="sub">Choose your dates. Duration counts working days only, and we check cover before you send.</p></div>'
     +'<form id="leaveForm" novalidate>'
     +'<div class="row2"><div class="field"><label for="f-name">Your name</label><input id="f-name" list="teamlist" autocomplete="off" placeholder="e.g. Raj Kumar" value="'+esc(S.me)+'"><datalist id="teamlist">'+opts+'</datalist></div>'
     +'<div class="field"><label for="f-applied">Application date</label><input id="f-applied" type="date" value="'+TODAY+'"></div></div>'
     +'<div class="row2 keep"><div class="field"><label for="f-start">Start date</label><input id="f-start" type="date"></div>'
     +'<div class="field"><label for="f-end">End date</label><input id="f-end" type="date"></div></div>'
-    +'<div id="dur" class="dur idle" aria-live="polite"></div><div id="ovl" class="ovl"></div>'
+    +'<div id="dur" class="dur idle" aria-live="polite"></div><div id="ovl" aria-live="polite"></div>'
     +'<div class="field"><label for="f-note">Note for your lead <span class="opt">(optional)</span></label><textarea id="f-note" rows="2" placeholder="Anything that helps with planning cover"></textarea></div>'
     +'<p id="err" class="err" role="alert" hidden></p>'
-    +'<div><button class="btn primary" type="submit">Send request</button></div>'
+    +'<div class="formfoot"><div class="total" id="total" aria-live="polite"></div><button class="btn primary" type="submit">Send request</button></div>'
     +'</form></section>'+side+'</div>';
   updateDur();
 }
 function val(id){var e=document.getElementById(id);return e?e.value.trim():''}
 function updateDur(){
-  var box=$('#dur'),ovl=$('#ovl');if(!box)return;
+  var box=$('#dur'),ovl=$('#ovl'),tot=$('#total');if(!box)return;
   var s=val('f-start'),e=val('f-end');
   if(!s||!e){
     box.className='dur idle';
     box.innerHTML='<div class="dur-num">–</div><div><div class="dur-t">Duration</div><div class="dur-s">Pick a start and end date to see it here.</div></div>';
-    ovl.innerHTML='';return;
+    ovl.innerHTML='';tot.innerHTML='Request: <b>choose dates</b>';return;
   }
   var sp=span(s,e);
   if(!sp){
     box.className='dur bad';
     box.innerHTML='<div class="dur-num">!</div><div><div class="dur-t">End date is before the start date</div><div class="dur-s">Adjust one of the dates.</div></div>';
-    ovl.innerHTML='';return;
+    ovl.innerHTML='';tot.innerHTML='Request: <b>check your dates</b>';return;
   }
   var n=sp.work.length;
   box.className='dur';
   var sub=esc(fRange(s,e))+' · '+plural(sp.cal,'calendar day')+'. Weekends'+(sp.hols.length?' and '+esc(sp.hols.join(', '))+' are':' and public holidays are')+' not counted.';
   box.innerHTML='<div class="dur-num">'+n+'</div><div><div class="dur-t">'+(n===1?'working day':'working days')+'</div><div class="dur-s">'+sub+'</div></div>';
-  var name=val('f-name'),others={};
-  S.requests.forEach(function(x){if(x.status==='approved'&&x.name!==name&&x.start<=e&&x.end>=s)others[x.name]=x});
-  var ks=Object.keys(others),pn=S.requests.filter(function(x){return x.status==='pending'&&x.name!==name&&x.start<=e&&x.end>=s}).length;
-  var t=ks.length?'<strong>'+esc(ks.map(first).join(', '))+'</strong> '+(ks.length===1?'is':'are')+' already approved to be away in this period.':'No one else is approved to be away in this period.';
-  if(pn)t+=' '+plural(pn,'other request')+' pending.';
-  ovl.innerHTML=t;
+  tot.innerHTML='Request: <b>'+plural(n,'working day')+'</b>';
+  var c=n?formCheck({id:'tmp',name:val('f-name')||'__new__',start:s,end:e}):null;
+  ovl.innerHTML=c?'<div class="preview '+c.cls+'"><span class="dot"></span><div>'+c.html+'</div></div>':'';
 }
 function submitForm(){
   var name=val('f-name'),applied=val('f-applied'),s=val('f-start'),e=val('f-end'),note=val('f-note'),err=$('#err');
@@ -477,89 +522,147 @@ function submitForm(){
   save();renderBadge();render();
 }
 
-/* Screen 2: review with calendar */
-function monthLabel(){var p=ui.month.split('-').map(Number);return new Date(p[0],p[1]-1,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'})}
-function calendarHTML(){
-  var p=ui.month.split('-').map(Number),y=p[0],m=p[1];
-  var firstDay=new Date(y,m-1,1),lead=(firstDay.getDay()+6)%7,dim=new Date(y,m,0).getDate(),weeks=Math.ceil((lead+dim)/7);
-  var dows=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(d){return '<div class="dow">'+d+'</div>'}).join('');
-  var cells='',anyLeave=false;
-  for(var i=0;i<weeks*7;i++){
-    var d=addDays(firstDay,i-lead),k=iso(d),inM=d.getMonth()===m-1,wk=d.getDay()===0||d.getDay()===6,hol=HOL[k],work=isWork(d);
-    var chips=[],names={},label='';
-    if(work){
-      var cov=S.requests.filter(function(r){return r.status!=='rejected'&&r.start<=k&&k<=r.end});
-      var rank=function(r){return r.id===ui.sel?0:r.status==='approved'?1:2};
-      cov.sort(function(a,b){return rank(a)-rank(b)});
-      cov.forEach(function(r){
-        var cls=r.id===ui.sel?'sel':r.status==='approved'?'ok':'pend';
-        if(cls!=='pend')names[r.name]=1;
-        chips.push({cls:cls,name:r.name,id:r.id});
-      });
-      if(chips.length&&inM)anyLeave=true;
+/* ---------- Screen 2: review ---------- */
+function monthRange(){var p=ui.month.split('-').map(Number);return {y:p[0],m:p[1],s:iso(new Date(p[0],p[1]-1,1)),e:iso(new Date(p[0],p[1],0)),dim:new Date(p[0],p[1],0).getDate()}}
+function monthLabel(){var mr=monthRange();return new Date(mr.y,mr.m-1,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'})}
+function leaveItems(){return S.requests.filter(function(r){return r.status!=='rejected'}).map(function(r){return {r:r,b:bounds(r)}}).filter(function(x){return x.b})}
+function barKind(r){
+  var ok=r.status==='approved';
+  var tip=ok?'Change decision for '+r.name+': '+fRange(r.start,r.end):r.name+' (pending): '+fRange(r.start,r.end)+'. Select to preview';
+  return {cls:ok?'ok':(r.id===ui.sel?'sel':'pend'),
+    attrs:'data-act="'+(ok?'open-decision':'select')+'" data-id="'+r.id+'" data-keep="1" title="'+esc(tip)+'" aria-label="'+esc(tip)+'"'};
+}
+function monthHTML(){
+  var mr=monthRange(),firstDay=new Date(mr.y,mr.m-1,1),lead=(firstDay.getDay()+6)%7,weeks=Math.ceil((lead+mr.dim)/7);
+  var items=leaveItems();
+  var html='<div class="mcal" role="group" aria-label="'+esc(monthLabel())+' team leave calendar"><div class="dowrow">'
+    +['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(d){return '<div class="dow">'+d+'</div>'}).join('')+'</div>';
+  for(var w=0;w<weeks;w++){
+    var ws=addDays(firstDay,w*7-lead),wsK=iso(ws),weK=iso(addDays(ws,6));
+    var segs=[];
+    items.forEach(function(x){
+      if(x.b.e<wsK||x.b.s>weK)return;
+      var s=x.b.s>wsK?x.b.s:wsK,e=x.b.e<weK?x.b.e:weK;
+      segs.push({r:x.r,c1:dayDiff(wsK,s)+1,c2:dayDiff(wsK,e)+1,l:x.b.s>=wsK,rr:x.b.e<=weK});
+    });
+    segs.sort(function(a,b){return a.c1-b.c1||(b.c2-b.c1)-(a.c2-a.c1)});
+    var lanes=[];
+    segs.forEach(function(sg){var li=0;while(lanes[li]!==undefined&&lanes[li]>=sg.c1)li++;lanes[li]=sg.c2;sg.lane=li});
+    var bg='',dh='';
+    for(var i=0;i<7;i++){
+      var d=addDays(ws,i),k=iso(d),inM=d.getMonth()===mr.m-1,away=awayNames(k).length,over=away>S.threshold,hol=HOL[k];
+      bg+='<div class="bgc'+(d.getDay()===0||d.getDay()===6?' wk':'')+(hol?' hol':'')+(over?' over':'')+'"></div>';
+      dh+='<div class="dh'+(inM?'':' out')+(k===TODAY?' today':'')+'" style="grid-column:'+(i+1)+'"><div class="top-row"><span class="num">'+d.getDate()+'</span>'+(over?'<span class="tag">'+away+' away</span>':'')+'</div>'+(hol?'<div class="hol-l">'+esc(hol)+'</div>':'')+'</div>';
     }
-    var away=Object.keys(names).length,over=away>S.threshold;
-    var shown=chips.slice(0,3).map(function(c){var act=c.cls==='ok'?'open-decision':'select';var tip=c.cls==='ok'?'Change decision for '+c.name:c.cls==='pend'?c.name+' (pending). Select in the list':c.name+' (selected request)';return '<button class="chip '+c.cls+'" type="button" data-act="'+act+'" data-id="'+c.id+'" title="'+esc(tip)+'" aria-label="'+esc(tip)+'"><span class="full">'+esc(first(c.name))+'</span><span class="ini">'+esc(initials(c.name))+'</span></button>'}).join('');
-    if(chips.length>3)shown+='<div class="chip more">+'+(chips.length-3)+' more</div>';
-    var aria=fDay(k,{weekday:'long',day:'numeric',month:'long'})+': '+(hol?hol:chips.length?chips.map(function(c){return c.name+(c.cls==='pend'?' (pending)':'')}).join(', '):'no one away');
-    cells+='<div class="day'+(wk?' wk':'')+(inM?'':' out')+(over?' over':'')+(k===TODAY?' today':'')+'" role="group" aria-label="'+esc(aria)+'">'
-      +'<div class="top-row"><span class="num">'+d.getDate()+'</span>'+(over?'<span class="tag">'+away+' away</span>':'')+'</div>'
-      +(hol?'<div class="hol">'+esc(hol)+'</div>':'')+shown+'</div>';
+    var bars=segs.map(function(sg){
+      var bk=barKind(sg.r);
+      return '<button class="bar '+bk.cls+(sg.l?' l':'')+(sg.rr?' r':'')+'" type="button" style="grid-column:'+sg.c1+' / '+(sg.c2+1)+';grid-row:'+(sg.lane+2)+'" '+bk.attrs+'><span class="full">'+esc(first(sg.r.name))+'</span><span class="ini">'+esc(initials(sg.r.name))+'</span></button>';
+    }).join('');
+    html+='<div class="week"><div class="wbg" aria-hidden="true">'+bg+'</div><div class="wfg">'+dh+bars+'</div></div>';
   }
-  return {html:dows+cells,any:anyLeave};
+  return html+'</div>';
+}
+function timelineHTML(){
+  var mr=monthRange(),N=mr.dim,items=leaveItems();
+  var head='<div class="tlrow tlhead"><div class="tname">Team</div>',count='<div class="tlrow tlcount"><div class="tname">Away of '+S.team.length+'</div>';
+  for(var i=1;i<=N;i++){
+    var d=new Date(mr.y,mr.m-1,i),k=iso(d),wk=d.getDay()===0||d.getDay()===6,hol=HOL[k],away=awayNames(k).length,over=away>S.threshold;
+    var cls=(wk?' wk':'')+(hol?' hol':'')+(k===TODAY?' today':'');
+    head+='<div class="tc'+cls+(over?' over':'')+'" style="grid-column:'+(i+1)+'"'+(hol?' title="'+esc(hol)+'"':'')+'><span>'+d.toLocaleDateString('en-GB',{weekday:'narrow'})+'</span><span class="tdn">'+i+'</span></div>';
+    count+='<div class="tc'+(wk||hol?' wk':'')+(over?' over':'')+'" style="grid-column:'+(i+1)+'">'+(away||'·')+'</div>';
+  }
+  var rows='';
+  S.team.forEach(function(name){
+    var cells='<div class="tname" title="'+esc(name)+'">'+esc(name)+'</div>',bars='';
+    for(var i=1;i<=N;i++){
+      var d=new Date(mr.y,mr.m-1,i),k=iso(d),over=awayNames(k).length>S.threshold;
+      cells+='<div class="tc'+(d.getDay()===0||d.getDay()===6||HOL[k]?' wk':'')+(over?' over':'')+'" style="grid-column:'+(i+1)+'"></div>';
+    }
+    items.filter(function(x){return x.r.name===name&&x.b.e>=mr.s&&x.b.s<=mr.e}).forEach(function(x){
+      var s=x.b.s>mr.s?x.b.s:mr.s,e=x.b.e<mr.e?x.b.e:mr.e,bk=barKind(x.r);
+      var c1=dayDiff(mr.s,s)+2,c2=dayDiff(mr.s,e)+2;
+      bars+='<button class="tbar '+bk.cls+'" type="button" style="grid-column:'+c1+' / '+(c2+1)+'" '+bk.attrs+'><span class="full">'+plural(x.b.n,'day')+'</span></button>';
+    });
+    rows+='<div class="tlrow">'+cells+bars+'</div>';
+  });
+  return '<div class="tl-scroll" tabindex="0" role="group" aria-label="'+esc(monthLabel())+' timeline, one row per person"><div class="tl" style="--n:'+N+'">'+head+'</div>'+count+'</div>'+rows+'</div></div>';
 }
 function reqCard(r){
   var n=(span(r.start,r.end)||{work:[]}).work.length,im=impactOf(r),sel=r.id===ui.sel;
   var flag=im.empty?'':im.over.length?'<span class="imp warn"><i></i>Over limit on '+plural(im.over.length,'day')+'</span>':'<span class="imp fine"><i></i>Cover looks fine</span>';
-  var actions=ui.reject===r.id
-    ? '<div class="reject-box"><label for="why-'+r.id+'">Reason for the requester <span class="opt">(optional)</span></label><textarea id="why-'+r.id+'" rows="2" placeholder="e.g. Release week, can we move it?"></textarea><div class="actions"><button class="btn sm" style="background:var(--no);border-color:var(--no);color:var(--surface)" data-act="reject-go" data-id="'+r.id+'" type="button">Confirm reject</button><button class="btn sm ghost" data-act="reject-cancel" type="button">Cancel</button></div></div>'
-    : '<div class="actions"><button class="btn sm ok" data-act="approve" data-id="'+r.id+'" type="button">Approve</button><button class="btn sm" data-act="reject-open" data-id="'+r.id+'" type="button">Reject</button></div>';
   return '<div class="req'+(sel?' sel':'')+'" data-act="select" data-id="'+r.id+'" tabindex="0" role="button" aria-pressed="'+sel+'" aria-label="Show '+esc(r.name)+'\'s request on the calendar">'
     +'<div class="req-top"><span class="req-name">'+esc(r.name)+'</span><span class="req-days">'+plural(n,'working day')+'</span></div>'
     +'<div class="req-dates">'+esc(fRange(r.start,r.end))+'</div>'
     +(r.note?'<div class="req-note">'+esc(r.note)+'</div>':'')
     +'<div class="req-note">Applied '+esc(fShort(r.applied))+'</div>'
-    +flag+actions+'</div>';
+    +'<div class="req-foot">'+flag+'<button class="btn sm primary" type="button" data-act="open-decision" data-id="'+r.id+'">Review</button></div></div>';
 }
 function renderReview(){
   var pend=pending();
   if(!pend.some(function(r){return r.id===ui.sel}))ui.sel=pend.length?pend[0].id:null;
-  var selReq=pend.filter(function(r){return r.id===ui.sel})[0];
-  var cal=calendarHTML();
+  var selReq=pend.filter(function(r){return r.id===ui.sel})[0],mr=monthRange();
+  var any=leaveItems().some(function(x){return x.b.e>=mr.s&&x.b.s<=mr.e});
   var prev=selReq?(function(){var t=impactText(selReq);return '<div class="preview '+t.cls+'"><span class="dot"></span><div><div class="eyebrow" style="margin-bottom:2px">Previewing '+esc(selReq.name)+' · '+esc(fRange(selReq.start,selReq.end))+'</div>'+t.html+'</div></div>'})()
     : '<div class="preview"><span class="dot"></span><div>No request is selected. Pick one from the list to see how it changes cover.</div></div>';
   var opts=[1,2,3,4,5].map(function(n){return '<option value="'+n+'"'+(n===S.threshold?' selected':'')+'>'+n+'</option>'}).join('');
   var decidedAll=S.requests.filter(function(r){return r.status!=='pending'&&r.decided}).sort(function(a,b){return a.decided<b.decided?1:-1});
   var decided=ui.allDecided?decidedAll:decidedAll.slice(0,4);
-  var queue=pend.length
-    ? pend.map(reqCard).join('')
-    : '<div class="card empty"><svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="34" fill="var(--accent-soft)"/><circle cx="36" cy="30" r="9" fill="var(--accent)"/><path d="M10 50c8-8 16-8 26 0s18 8 26 0" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linecap="round"/></svg><h3>All caught up</h3><p>No requests are waiting for a decision. New ones will appear here as soon as they are sent.</p></div>';
-  view.innerHTML='<div class="head"><h1>Review</h1><p class="sub">Select a request to see it on the calendar, then approve or reject.</p></div>'
+  var queue=pend.length?pend.map(reqCard).join('')
+    : '<div class="card empty"><svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="34" fill="var(--accent-soft)"/><circle cx="36" cy="30" r="9" fill="var(--accent)"/><path d="M10 50c8-8 16-8 26 0s18 8 26 0" fill="none" stroke="var(--ok-fill)" stroke-width="3" stroke-linecap="round"/></svg><h3>All caught up</h3><p>No requests are waiting for a decision. New ones will appear here as soon as they are sent.</p></div>';
+  var pressed=function(v){return ui.calView===v};
+  view.innerHTML='<div class="head"><h1>Review</h1><p class="sub">Select a request to see it on the calendar, then open it to approve or reject.</p></div>'
     +'<div class="review-grid"><section class="card">'
     +'<div class="calbar"><div class="calnav"><button class="iconbtn" data-act="prev" aria-label="Previous month" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><span class="monthlbl">'+esc(monthLabel())+'</span><button class="iconbtn" data-act="next" aria-label="Next month" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button><button class="btn sm ghost" data-act="today" type="button">Today</button></div>'
-    +'<label class="limit" for="limit">Flag days when more than <select id="limit">'+opts+'</select> of '+S.team.length+' are away</label></div>'
+    +'<div class="calopts"><div class="seg" role="group" aria-label="Calendar view"><button type="button" data-act="view" data-v="month" aria-pressed="'+pressed('month')+'">Month</button><button type="button" data-act="view" data-v="timeline" aria-pressed="'+pressed('timeline')+'">Timeline</button></div>'
+    +'<label class="limit" for="limit">Flag days when more than <select id="limit">'+opts+'</select> of '+S.team.length+' are away</label></div></div>'
     +prev
-    +'<div class="legend"><span><i class="sw ok"></i>Approved</span><span><i class="sw sel"></i>Selected request</span><span><i class="sw pend"></i>Other pending</span><span><i class="sw over"></i>Over your limit</span></div>'
-    +'<div class="cal" role="group" aria-label="'+esc(monthLabel())+' team leave calendar">'+cal.html+'</div>'
-    +(cal.any?'<p class="hint">Select an approved name on the calendar to change the decision.</p>':'<p class="calnote">No one is away this month.</p>')
+    +'<div class="legend"><span><i class="sw ok"></i>Approved</span><span><i class="sw pend"></i>Pending</span><span><i class="sw sel"></i>Under review</span><span><i class="sw over"></i>Over your limit</span></div>'
+    +(ui.calView==='timeline'?timelineHTML():monthHTML())
+    +(any?'<p class="hint">Select an approved bar to change that decision.</p>':'<p class="calnote">No one is away this month.</p>')
     +'</section>'
     +'<aside class="queue"><div class="qhead"><h2>Waiting for you</h2><span class="count">'+plural(pend.length,'request')+'</span></div>'+queue
     +(decided.length?'<div class="card"><h3>'+(ui.allDecided?'All decided':'Recently decided')+'</h3><p class="meta" style="margin-top:2px">Select one to change the decision.</p><div class="decided" style="margin-top:8px">'+decided.map(function(r){return '<button class="row" type="button" data-act="open-decision" data-id="'+r.id+'"><span><b>'+esc(first(r.name))+'</b> · '+esc(fRange(r.start,r.end))+'</span><span class="pill '+r.status+'">'+(r.status==='approved'?'Approved':'Rejected')+'</span></button>'}).join('')+(decidedAll.length>4?'<button class="linkbtn more" data-act="all-decided" type="button">'+(ui.allDecided?'Show fewer':'Show all '+decidedAll.length)+'</button>':'')+'</div></div>':'')
     +'</aside></div>';
 }
-function decide(id,status,reason){
+function decide(id,status,message){
   var r=S.requests.filter(function(x){return x.id===id})[0];if(!r)return;
   var prev=r.status;
   if(prev!=='pending')r.changed={from:prev==='rejected'?'not approved':prev,on:TODAY};
-  r.status=status;r.decided=status==='pending'?null:TODAY;r.reason=status==='rejected'?(reason||''):'';
+  r.status=status;r.decided=status==='pending'?null:TODAY;r.reason=status==='pending'?'':(message||'');
   if(status==='pending')ui.sel=id;
-  ui.reject=null;ui.modal=null;ui.modalReject=false;save();renderBadge();
+  ui.modal=null;save();renderBadge();
   var who=first(r.name)+"'s request";
   toast(status==='pending'?'Returned '+who+' to pending.':prev==='pending'?(status==='approved'?'Approved ':'Rejected ')+who+'.':'Changed '+who+' to '+(status==='approved'?'approved':'rejected')+'.');
   keepScroll(render);
 }
 
-/* Screen 3: request status */
+/* decision sheet: one place to decide, or change a decision already made */
+function renderModal(){
+  var host=$('#modal'),r=ui.modal&&S.requests.filter(function(x){return x.id===ui.modal})[0];
+  if(!r||route()!=='review'){host.innerHTML='';return}
+  var sp=span(r.start,r.end)||{work:[],cal:0},im=impactOf(r),t=impactText(r),cur=r.status,label={approved:'Approved',rejected:'Not approved',pending:'Pending'}[cur];
+  var cover=im.empty?'No working days':im.over.length?'Over limit: up to '+im.peak+' of '+im.total+' away':'Within limit: at most '+im.peak+' of '+im.total+' away';
+  var rows='<dt>Requested by</dt><dd>'+esc(r.name)+'</dd>'
+    +'<dt>Applied</dt><dd>'+esc(fShort(r.applied))+'</dd>'
+    +'<dt>Dates</dt><dd>'+esc(fRange(r.start,r.end))+'</dd>'
+    +'<dt>Duration</dt><dd>'+plural(sp.work.length,'working day')+' <span class="muted">('+plural(sp.cal,'calendar day')+')</span></dd>'
+    +'<dt>Cover</dt><dd style="color:var(--'+(im.over&&im.over.length?'accent':'ok')+')">'+esc(cover)+'</dd>'
+    +(r.note?'<dt>Note</dt><dd>'+esc(r.note)+'</dd>':'')
+    +'<dt>Approver</dt><dd>Team lead</dd>'
+    +(cur!=='pending'&&r.decided?'<dt>Decision</dt><dd>'+label+' on '+esc(fShort(r.decided))+'</dd>':'');
+  host.innerHTML='<div class="scrim" data-act="close-modal"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mt" tabindex="-1">'
+    +'<div class="sheet-top"><div><div class="eyebrow">'+(cur==='pending'?'Review request':'Change decision')+'</div><h2 id="mt">'+esc(r.name)+'</h2></div><button class="iconbtn" data-act="close-modal" aria-label="Close" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+    +'<dl class="kv">'+rows+'</dl>'
+    +'<div class="preview '+t.cls+'"><span class="dot"></span><div>'+t.html+'</div></div>'
+    +'<div class="field"><label for="mmsg">Message to requester <span class="opt">(optional)</span></label><textarea id="mmsg" rows="3" placeholder="e.g. Approved. Please hand over the weekly report first.">'+esc(r.reason)+'</textarea></div>'
+    +'<div class="sheet-foot">'+(cur!=='pending'?'<button class="linkbtn" data-act="m-pending" data-id="'+r.id+'" type="button">Return to pending</button>':'')
+    +'<button class="btn rej" data-act="m-decide" data-s="rejected" data-id="'+r.id+'" type="button"'+(cur==='rejected'?' disabled':'')+'>'+(cur==='rejected'?'Rejected':'Reject')+'</button>'
+    +'<button class="btn ok" data-act="m-decide" data-s="approved" data-id="'+r.id+'" type="button"'+(cur==='approved'?' disabled':'')+'>'+(cur==='approved'?'Approved':'Approve')+'</button></div>'
+    +'</div></div>';
+  var sh=host.querySelector('.sheet');if(sh)sh.focus();
+}
+
+/* ---------- Screen 3: status ---------- */
 function renderStatus(){
   if(ui.who==null)ui.who=S.me||'all';
   var names=S.team.slice().sort();
@@ -593,37 +696,12 @@ function statusCard(r){
     +'<div class="sname">'+esc(ui.who==='all'?r.name:fRange(r.start,r.end))+'</div>'
     +'<div class="sdates">'+esc(ui.who==='all'?fRange(r.start,r.end):plural(n,'working day'))+'</div>'
     +'<div class="muted" style="font-size:14px">'+(ui.who==='all'?plural(n,'working day')+' · ':'')+'Applied '+esc(fShort(r.applied))+(r.note?' · '+esc(r.note):'')+'</div>'
-    +(r.status==='rejected'&&r.reason?'<div class="reason"><b>From your lead:</b> '+esc(r.reason)+'</div>':'')
+    +(r.status!=='pending'&&r.reason?'<div class="reason'+(r.status==='approved'?' ok':'')+'"><b>From your lead:</b> '+esc(r.reason)+'</div>':'')
     +(r.changed?'<div class="muted" style="font-size:13px;margin-top:8px">'+(r.status==='pending'?'Reopened '+esc(fShort(r.changed.on))+' for another look. Earlier decision: '+esc(r.changed.from)+'.':'Decision updated '+esc(fShort(r.decided||r.changed.on))+'. Earlier decision: '+esc(r.changed.from)+'.')+'</div>':'')
     +'</div><ol class="track" aria-label="Progress"><li class="on">Submitted<br>'+esc(fShort(r.applied))+'</li>'+t2+t3+'</ol></article>';
 }
 
-/* decision sheet: change a decision that was already made */
-function renderModal(){
-  var host=$('#modal'),r=ui.modal&&S.requests.filter(function(x){return x.id===ui.modal})[0];
-  if(!r||route()!=='review'){host.innerHTML='';return}
-  var n=(span(r.start,r.end)||{work:[]}).work.length,t=impactText(r),cur=r.status;
-  var label={approved:'approved',rejected:'not approved',pending:'pending'}[cur];
-  var body;
-  if(ui.modalReject){
-    body='<div class="reject-box"><label for="mwhy">Reason for the requester <span class="opt">(optional)</span></label><textarea id="mwhy" rows="3" placeholder="e.g. Release week, can we move it?">'+esc(r.reason)+'</textarea><div class="actions"><button class="btn no" data-act="m-reject-go" data-id="'+r.id+'" type="button">Confirm reject</button><button class="btn ghost" data-act="m-reject-back" type="button">Back</button></div></div>';
-  }else{
-    body='<div class="choices">'
-      +'<button class="btn ok" data-act="m-approve" data-id="'+r.id+'" type="button"'+(cur==='approved'?' disabled':'')+'><span>Approve</span><span>'+(cur==='approved'?'Current':'')+'</span></button>'
-      +'<button class="btn no" data-act="m-reject-open" data-id="'+r.id+'" type="button"'+(cur==='rejected'?' disabled':'')+'><span>Reject</span><span>'+(cur==='rejected'?'Current':'')+'</span></button>'
-      +'<button class="btn" data-act="m-pending" data-id="'+r.id+'" type="button"><span>Return to pending</span><span class="meta">Decide later</span></button></div>';
-  }
-  host.innerHTML='<div class="scrim" data-act="close-modal"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mt" tabindex="-1">'
-    +'<div class="sheet-top"><div><div class="eyebrow">Change decision</div><h2 id="mt">'+esc(r.name)+'</h2></div><button class="iconbtn" data-act="close-modal" aria-label="Close" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
-    +'<div><div style="font-weight:500">'+esc(fRange(r.start,r.end))+'</div><div class="meta">'+plural(n,'working day')+' · Applied '+esc(fShort(r.applied))+(r.note?' · '+esc(r.note):'')+'</div></div>'
-    +'<div><span class="pill '+cur+'">Currently '+label+(cur!=='pending'&&r.decided?' on '+esc(fShort(r.decided)):'')+'</span></div>'
-    +(cur==='rejected'&&r.reason&&!ui.modalReject?'<div class="reason" style="margin-top:0"><b>Your reason:</b> '+esc(r.reason)+'</div>':'')
-    +'<div class="preview '+t.cls+'" style="margin:0"><span class="dot"></span><div>'+t.html+'</div></div>'
-    +body+'</div></div>';
-  var sh=host.querySelector('.sheet');if(sh&&!ui.modalReject)sh.focus();
-}
-
-/* ---------- shell ---------- */
+/* ---------- routing + events ---------- */
 function route(){var h=(location.hash||'').replace('#','');return ['submit','review','status'].indexOf(h)>-1?h:'review'}
 function render(){
   var r=route();
@@ -644,32 +722,26 @@ document.addEventListener('click',function(e){
   var a=el.dataset.act,id=el.dataset.id;
   if(el.classList.contains('scrim')&&e.target!==el)return;
   if(a==='select'){
-    ui.sel=id;ui.reject=null;
-    var r=S.requests.filter(function(x){return x.id===id})[0];
-    if(r)ui.month=r.start.slice(0,7);
+    ui.sel=id;
+    if(!el.dataset.keep){var r=S.requests.filter(function(x){return x.id===id})[0];if(r)ui.month=r.start.slice(0,7)}
     keepScroll(render);
-  }else if(a==='approve'){decide(id,'approved')}
-  else if(a==='reject-open'){ui.reject=id;ui.sel=id;keepScroll(render);var t=document.getElementById('why-'+id);if(t)t.focus()}
-  else if(a==='reject-cancel'){ui.reject=null;keepScroll(render)}
-  else if(a==='reject-go'){var t2=document.getElementById('why-'+id);decide(id,'rejected',t2?t2.value.trim():'')}
+  }
+  else if(a==='open-decision'){ui.modal=id;keepScroll(render)}
+  else if(a==='close-modal'){ui.modal=null;keepScroll(render)}
+  else if(a==='m-decide'){var m=document.getElementById('mmsg');decide(id,el.dataset.s,m?m.value.trim():'')}
+  else if(a==='m-pending'){decide(id,'pending')}
   else if(a==='prev'){shiftMonth(-1);keepScroll(render)}
   else if(a==='next'){shiftMonth(1);keepScroll(render)}
   else if(a==='today'){ui.month=TODAY.slice(0,7);keepScroll(render)}
+  else if(a==='view'){ui.calView=el.dataset.v;keepScroll(render)}
   else if(a==='filter'){ui.filter=el.dataset.f;keepScroll(render)}
-  else if(a==='open-decision'){ui.modal=id;ui.modalReject=false;keepScroll(render)}
-  else if(a==='close-modal'){ui.modal=null;ui.modalReject=false;keepScroll(render)}
-  else if(a==='m-approve'){decide(id,'approved')}
-  else if(a==='m-pending'){decide(id,'pending')}
-  else if(a==='m-reject-open'){ui.modalReject=true;keepScroll(render);var t3=document.getElementById('mwhy');if(t3)t3.focus()}
-  else if(a==='m-reject-back'){ui.modalReject=false;keepScroll(render)}
-  else if(a==='m-reject-go'){var t4=document.getElementById('mwhy');decide(id,'rejected',t4?t4.value.trim():'')}
   else if(a==='all-decided'){ui.allDecided=!ui.allDecided;keepScroll(render)}
   else if(a==='another'){ui.submitted=null;render()}
   else if(a==='clear'){S.requests=[];S.example=false;save();initMonth();ui.sel=null;render();toast('Example data cleared. The calendar is empty.')}
-  else if(a==='restore'){S=seed();save();ui={sel:null,month:null,filter:'all',who:null,reject:null,submitted:null};initMonth();render();toast('Example data restored.')}
+  else if(a==='restore'){S=seed();save();ui={sel:null,month:null,calView:ui.calView,filter:'all',who:null,modal:null,submitted:null,allDecided:false};initMonth();render();toast('Example data restored.')}
 });
 document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'&&ui.modal){ui.modal=null;ui.modalReject=false;render();return}
+  if(e.key==='Escape'&&ui.modal){ui.modal=null;render();return}
   if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.req[data-act="select"]')){e.preventDefault();e.target.click()}
 });
 document.addEventListener('submit',function(e){if(e.target.id==='leaveForm'){e.preventDefault();submitForm()}});
@@ -686,7 +758,7 @@ document.addEventListener('change',function(e){
   else if(id==='who'){ui.who=e.target.value;if(ui.who!=='all'){S.me=ui.who;save()}render()}
   else if(id==='f-start'||id==='f-end'){updateDur()}
 });
-window.addEventListener('hashchange',function(){ui.submitted=null;ui.reject=null;ui.modal=null;render();window.scrollTo(0,0)});
+window.addEventListener('hashchange',function(){ui.submitted=null;ui.modal=null;render();window.scrollTo(0,0)});
 render();
 })();
 </script>
